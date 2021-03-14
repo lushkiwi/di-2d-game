@@ -41,14 +41,16 @@ start_img = pygame.image.load(base_dir + "/img/start_btn.png")
 exit_img = pygame.image.load(base_dir + "/img/exit_btn.png")
 
 # load sounds
-pygame.mixer.music.load(base_dir + "/img/music.wav")
+pygame.mixer.music.load(base_dir + "/img/music.mp3")
 pygame.mixer.music.play(-1, 0.0, 5000)
-coin_fx = pygame.mixer.Sound(base_dir + "/img/coin.wav")
+coin_fx = pygame.mixer.Sound(base_dir + "/img/coin.mp3")
 coin_fx.set_volume(0.5)
-jump_fx = pygame.mixer.Sound(base_dir + "/img/jump.wav")
+jump_fx = pygame.mixer.Sound(base_dir + "/img/jump.mp3")
 jump_fx.set_volume(0.5)
-game_over_fx = pygame.mixer.Sound(base_dir + "/img/game_over.wav")
+game_over_fx = pygame.mixer.Sound(base_dir + "/img/game_over.mp3")
 game_over_fx.set_volume(0.5)
+victory_fx = pygame.mixer.Sound(base_dir + "/img/victory.wav")
+victory_fx.set_volume(0.5)
 
 def draw_text(text, font, color, x, y):
 	img = font.render(text, True, color)
@@ -178,13 +180,15 @@ class Player():
 
 			# check for collision w/ enemies
 			if pygame.sprite.spritecollide(self, goomba_group, False):
-				game_over = -1
+				pygame.mixer.music.stop()
 				game_over_fx.play()
+				game_over = -1
 
 			# check for collision w/ lava
 			if pygame.sprite.spritecollide(self, lava_group, False):
-				game_over = -1
+				pygame.mixer.music.stop()
 				game_over_fx.play()
+				game_over = -1
 
 			# check for collision w/ exit
 			if pygame.sprite.spritecollide(self, exit_group, False):
@@ -424,8 +428,8 @@ while run:
 			# update score
 			# check if coin has been collected
 			if pygame.sprite.spritecollide(player, coin_group, True):
-				score += 1
 				coin_fx.play()
+				score += 1
 			draw_text("X " + str(score), font_score, white, tile_size - 10, 10)
 		
 		# draw groups
@@ -440,6 +444,7 @@ while run:
 		# if player has died
 		if game_over == -1:
 			if restart_button.draw():
+				pygame.mixer.music.play(-1, 0.0, 5000)
 				world_data = []
 				world = reset_level(level)
 				game_over = 0
@@ -455,8 +460,11 @@ while run:
 				world = reset_level(level)
 				game_over = 0
 			else:
-				draw_text("You Win!", font, blue, (screen_width // 2) - 140, screen_height // 2 - 240)
+				draw_text("You Win!", font, blue, (screen_width // 2) - 140, screen_height // 2 - 340)
+				draw_text("You get the Code for the Pipe Finder!", pygame.font.SysFont('Bauhaus 93', 50), blue, (screen_width // 2) - 410, screen_height // 2 - 240)
+				pygame.mixer.music.stop()
 				if restart_button.draw():
+					pygame.mixer.music.play()
 					level = 1
 					# reset level
 					world_data = []
