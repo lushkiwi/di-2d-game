@@ -30,7 +30,7 @@ tile_size = 50
 game_over = 0
 main_menu = True
 level = 0
-max_levels = 7
+max_levels = 4
 score = 0
 
 # load images
@@ -69,6 +69,7 @@ def reset_level(level):
 	goomba_group.empty()
 	platform_group.empty()
 	lava_group.empty()
+	coin_group.empty()
 	exit_group.empty()
 
 	# load in level data and create world
@@ -460,6 +461,7 @@ while run:
 				world = reset_level(level)
 				game_over = 0
 			else:
+				# wow, if youre here you must really like my code. how's your day? dm me on discord @kiwi#8368
 				draw_text("You Win!", font, blue, (screen_width // 2) - 140, screen_height // 2 - 340)
 				draw_text("You get the Code for the Pipe Finder!", pygame.font.SysFont('Bauhaus 93', 50), blue, (screen_width // 2) - 410, screen_height // 2 - 240)
 				pygame.mixer.music.stop()
