@@ -1,3 +1,5 @@
+# program is by team Meraki from Gulf Coast
+
 import pygame, os, time, pickle
 from pygame.locals import *
 from pygame import mixer
